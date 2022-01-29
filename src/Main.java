@@ -1,5 +1,12 @@
+import java.util.ArrayList;
+
+
 public class Main {
-	enum Color{
-		WHITE, YELLOW, RED, ORANGE, BLUE, GREEN
+	public static void main(String args[]) {
+		Cube cube = new Cube();
+		cube.down();
+		cube.back();
+		cube.printState();
+		
 	}
 }
