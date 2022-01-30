@@ -18,17 +18,17 @@ public class Cube {
 		for(int i = 0; i < 6; i++) {
 			faces.add(new Color[3][3]);
 		}
-		facesColor.add(Color.YELLOW);//up
+		facesColor.add(Color.WHITE);//up
 		up = 0;
-		facesColor.add(Color.WHITE);//down
+		facesColor.add(Color.YELLOW);//down
 		down = 1;
 		facesColor.add(Color.ORANGE);//left
 		left = 2;
 		facesColor.add(Color.RED);//right
 		right = 3;
-		facesColor.add(Color.GREEN);//back
+		facesColor.add(Color.BLUE);//back
 		back = 4;
-		facesColor.add(Color.BLUE);//front
+		facesColor.add(Color.GREEN);//front
 		front = 5;
 		for(int i = 0; i < faces.size() && i < facesColor.size(); i++) {
 			for(int j = 0; j < 3; j++) {
@@ -238,42 +238,42 @@ public class Cube {
 		try {
 		 FileWriter file = new FileWriter("C:\\Users\\aarus\\AppData\\RubiksCube\\cubeState" + stateNumber + ".ppm");
 		 stateNumber++;
-	      file.write("P3\r\n9 12\r\n255");
+	      file.write("P3\r\n12 9\r\n255");
 	      file.write(returnEmptySpace());
 	      file.write(returnColorString(faces.get(up)[0]));
+	      file.write(returnEmptySpace());
 	      file.write(returnEmptySpace());
 	      file.write(returnEmptySpace());
 	      file.write(returnColorString(faces.get(up)[1]));
 	      file.write(returnEmptySpace());
 	      file.write(returnEmptySpace());
+	      file.write(returnEmptySpace());
 	      file.write(returnColorString(faces.get(up)[2]));
+	      file.write(returnEmptySpace());
 	      file.write(returnEmptySpace());
 	      file.write(returnColorString(faces.get(left)[0]));
 	      file.write(returnColorString(faces.get(front)[0]));
 	      file.write(returnColorString(faces.get(right)[0]));
+	      file.write(returnColorString(faces.get(back)[0]));
 	      file.write(returnColorString(faces.get(left)[1]));
 	      file.write(returnColorString(faces.get(front)[1]));
 	      file.write(returnColorString(faces.get(right)[1]));
+	      file.write(returnColorString(faces.get(back)[1]));
 	      file.write(returnColorString(faces.get(left)[2]));
 	      file.write(returnColorString(faces.get(front)[2]));
 	      file.write(returnColorString(faces.get(right)[2]));
+	      file.write(returnColorString(faces.get(back)[2]));
 	      file.write(returnEmptySpace());
 	      file.write(returnColorString(faces.get(down)[0]));
+	      file.write(returnEmptySpace());
 	      file.write(returnEmptySpace());
 	      file.write(returnEmptySpace());
 	      file.write(returnColorString(faces.get(down)[1]));
 	      file.write(returnEmptySpace());
 	      file.write(returnEmptySpace());
+	      file.write(returnEmptySpace());
 	      file.write(returnColorString(faces.get(down)[2]));
 	      file.write(returnEmptySpace());
-	      file.write(returnEmptySpace());
-	      file.write(returnColorStringReversed(faces.get(back)[2]));
-	      file.write(returnEmptySpace());
-	      file.write(returnEmptySpace());
-	      file.write(returnColorStringReversed(faces.get(back)[1]));
-	      file.write(returnEmptySpace());
-	      file.write(returnEmptySpace());
-	      file.write(returnColorStringReversed(faces.get(back)[0]));
 	      file.write(returnEmptySpace());
 	      file.close();
 		}catch (IOException e) {
