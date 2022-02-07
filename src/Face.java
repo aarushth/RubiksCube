@@ -2,19 +2,25 @@ import RubiksCube.*;
 
 public class Face {
 
-	private Color c;
-	private Orientation o;
+	private Color color;
+	private Orientation orientation;
+
 	
-	public Face(Color color, Orientation orientation)
+	public Face(Color c, Orientation o)
 	{
-		c = color;
-		o = orientation;
+		color = c;
+		orientation = o;
 	}
 	
 	public Orientation getOrientation() {
-		return o;
+		return orientation;
 	}
 	public Color getColor() {
-		return c;
+		return color;
 	}
+	
+	public void setOrientation(Orientation o) {
+		orientation = o;
+	}
+
 }

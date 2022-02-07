@@ -3,7 +3,7 @@ import java.io.IOException;
 import RubiksCube.*;
 
 public class Buffer {
-	private int stateNumber = 0;
+	private static int stateNumber = 0;
 	private Color[][] net = new Color[15][11];
 	
 	public Buffer() {
@@ -34,53 +34,58 @@ public class Buffer {
 	
 	
 	public void printState(Piece[][][] cube) {
+		int i = 0;
+		int j = 0;
+		int k = 0;
+		int p = 0;
+		int q = 0;
 		//up
-		for (int j = 2, p = 0; j >= 0 ; j--, p++){
-			for (int i = 0, q = 4; i < 3 ;i++, q++){
-				Color c = cube[i][j][2].getColorOfFace(Orientation.PositiveZ);
+		for (j = 2, p = 0, k = 2; j >= 0 ; j--, p++){
+			for (i = 0, q = 4; i < 3 ;i++, q++){
+				Color c = cube[i][j][k].getColorOfFace(Orientation.PositiveZ);
 					net[q][p] = c;
 			}
 		}
 		//left
-		for (int k = 2, p = 4; k >= 0 ; k--, p++){
-			for (int j=2, q = 0; j >= 0 ;j--, q++){
-				Color c = cube[0][j][k].getColorOfFace(Orientation.NegativeX);
+		for (k = 2, p = 4, i = 0; k >= 0 ; k--, p++){
+			for (j=2, q = 0; j >= 0 ;j--, q++){
+				Color c = cube[i][j][k].getColorOfFace(Orientation.NegativeX);
 					net[q][p] = c;
 			}
 		}
 		//front
-		for (int j = 2, p = 4; j >= 0 ; j--, p++){
-			for (int i=0, q = 4; i < 3 ;i++, q++){
-				Color c = cube[i][0][j].getColorOfFace(Orientation.NegativeY);
+		for (k = 2, p = 4, j = 0; k >= 0 ; k--, p++){
+			for (i = 0, q = 4; i < 3 ;i++, q++){
+				Color c = cube[i][j][k].getColorOfFace(Orientation.NegativeY);
 					net[q][p] = c;
 			}
 		}
 		//right
-		for (int j = 2, p = 4; j >= 0 ; j--, p++){
-			for (int i=0, q = 8; i < 3 ;i++, q++){
-				Color c = cube[2][i][j].getColorOfFace(Orientation.PositiveX);
+		for (k = 2, p = 4, i = 2; k >= 0 ; k--, p++){
+			for (j = 0, q = 8; j < 3 ;j++, q++){
+				Color c = cube[i][j][k].getColorOfFace(Orientation.PositiveX);
 					net[q][p] = c;					
 			}
 		}
 		//back
-		for (int j = 2, p = 4; j >= 0 ; j--, p++){
-			for (int i=0, q = 12; i < 3 ;i++, q++){
-				Color c = cube[i][2][j].getColorOfFace(Orientation.PositiveY);
+		for (k = 2, p = 4, j = 2; k >= 0 ; k--, p++){
+			for (i = 2, q = 12; i >=0 ;i--, q++){
+				Color c = cube[i][j][k].getColorOfFace(Orientation.PositiveY);
 					net[q][p] = c;
 			}
 		}
 		//down
-		for (int j = 0, p = 8; j < 3 ; j++, p++){
-			for (int i = 0, q = 4; i < 3 ;i++, q++){
-				Color c = cube[i][j][0].getColorOfFace(Orientation.NegativeZ);
+		for (j = 0, p = 8, k = 0; j < 3 ; j++, p++){
+			for (i = 0, q = 4; i < 3 ;i++, q++){
+				Color c = cube[i][j][k].getColorOfFace(Orientation.NegativeZ);
 					net[q][p] = c;					
 			}
 		}
 		try {
-			 FileWriter file = new FileWriter("C:\\Users\\aarus\\AppData\\RubiksCube\\cubeState" + stateNumber + ".ppm");
+			 FileWriter file = new FileWriter("C:\\Users\\aarus\\AppData\\RubiksCube\\cubeState" + stateNumber++ + ".ppm");
 			 file.write("P3\r\n15 11\r\n255");
-			 for (int i = 0; i < 11; i++) {
-				 for (int j = 0; j < 15; j++) {
+			 for (i = 0; i < 11; i++) {
+				 for (j = 0; j < 15; j++) {
 						 file.write(getColor(net[j][i]));
 				 }
 			 }
