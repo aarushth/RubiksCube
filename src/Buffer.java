@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.io.FileWriter;
 import java.io.IOException;
 import RubiksCube.*;
@@ -53,8 +54,50 @@ public class Buffer {
 			return null;
 		}
 	}
-	
-	
+	/*
+	private void frontParallelogram(int x, int y, int multiplier, Color c, Graphics g) {
+		g.setColor(c);
+		int[] xpoints = new int[4];
+		xpoints[0] = x*multiplier;
+		xpoints[1] = (x+2)*multiplier;
+		xpoints[2] = (x+2)*multiplier;
+		xpoints[3] = (x)*multiplier;
+		int[] ypoints = new int[4];
+		ypoints[0] = (y)*multiplier;
+		ypoints[1] = (y-1)*multiplier;
+		ypoints[2] = (y-3)*multiplier;
+		ypoints[3] = (y-2)*multiplier;
+		g.fillPolygon(new Polygon(xpoints, ypoints, 4));
+	}
+	private void rightParallelogram(int x, int y, int multiplier, Color c, Graphics g) {
+		g.setColor(c);
+		int[] xpoints = new int[4];
+		xpoints[0] = x*multiplier;
+		xpoints[1] = (x-2)*multiplier;
+		xpoints[2] = (x-2)*multiplier;
+		xpoints[3] = (x)*multiplier;
+		int[] ypoints = new int[4];
+		ypoints[0] = (y)*multiplier;
+		ypoints[1] = (y-1)*multiplier;
+		ypoints[2] = (y-3)*multiplier;
+		ypoints[3] = (y-2)*multiplier;
+		g.fillPolygon(new Polygon(xpoints, ypoints, 4));
+	}
+	private void upParallelogram(int x, int y, int multiplier, Color c, Graphics g) {
+		g.setColor(c);
+		int[] xpoints = new int[4];
+		xpoints[0] = x*multiplier;
+		xpoints[1] = (x+2)*multiplier;
+		xpoints[2] = (x)*multiplier;
+		xpoints[3] = (x-2)*multiplier;
+		int[] ypoints = new int[4];
+		ypoints[0] = (y)*multiplier;
+		ypoints[1] = (y+1)*multiplier;
+		ypoints[2] = (y+2)*multiplier;
+		ypoints[3] = (y+1)*multiplier;
+		g.fillPolygon(new Polygon(xpoints, ypoints, 4));
+	}
+	*/
 	public void printStateFrame(Piece[][][] cube, Graphics g) {
 		int i = 0;
 		int j = 0;

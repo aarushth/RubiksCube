@@ -1,17 +1,11 @@
 import RubiksCube.*;
 public class Cube {
 	private Piece[][][] cube = new Piece[3][3][3];
-	/*
-	private static Face white = new Face(Color.WHITE, Orientation.PositiveZ);
-	private static Face yellow = new Face(Color.YELLOW, Orientation.NegativeZ);
-	private static Face green = new Face(Color.GREEN, Orientation.NegativeY);
-	private static Face blue = new Face(Color.BLUE, Orientation.PositiveY);
-	private static Face red = new Face(Color.RED, Orientation.PositiveX);
-	private static Face orange = new Face(Color.ORANGE, Orientation.NegativeX);
-	*/
-	
 	public Piece[][][] getCube(){
 		return cube;
+	}
+	public void setCube(Piece[][][] c) {
+		cube = c;
 	}
 	private Piece[][][] getCubeCopy(){
 		Piece[][][] cubeCopy = new Piece[3][3][3];
@@ -72,7 +66,7 @@ public class Cube {
 			}
 		}
 	}
-	public void up() {
+	public String up() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -84,8 +78,9 @@ public class Cube {
 				cube[i][j][2] = temp[2-j][i][2];
 			}
 		}
+		return "U ";
 	}
-	public void down() {
+	public String down() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -97,8 +92,9 @@ public class Cube {
 				cube[i][j][0] = temp[j][2-i][0];
 			}
 		}
+		return "D ";
 	}
-	public void right() {
+	public String right() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -110,8 +106,9 @@ public class Cube {
 				cube[2][i][j] = temp[2][2-j][i];
 			}
 		}
+		return "R ";
 	}
-	public void left() {
+	public String left() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -123,8 +120,10 @@ public class Cube {
 				cube[0][i][j] = temp[0][j][2-i];
 			}
 		}
+		return "L ";
 	}
-	public void back() {
+	
+	public String back() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -136,8 +135,9 @@ public class Cube {
 				cube[i][2][j] = temp[j][2][2-i];
 			}
 		}
+		return "B ";
 	}
-	public void front() {
+	public String front() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -149,59 +149,117 @@ public class Cube {
 				cube[i][0][j] = temp[2-j][0][i];
 			}
 		}
+		return "F ";
 	}
-	public void upPrime() {
+	public String upPrime() {
 		up();
 		up();
 		up();
+		return "U' ";
 	}
-	public void downPrime() {
+	public String downPrime() {
 		down();
 		down();
 		down();
+		return "D' ";
 	}
-	public void leftPrime() {
+	public String leftPrime() {
 		left();
 		left();
 		left();
+		return "L' ";
 	}
-	public void rightPrime() {
+	public String rightPrime() {
 		right();
 		right();
 		right();
+		return "R' ";
 	}
-	public void backPrime() {
+	public String backPrime() {
 		back();
 		back();
 		back();
+		return "B' ";
 	}
-	public void frontPrime() {
+	public String frontPrime() {
 		front();
 		front();
 		front();
+		return "F' ";
 	}
-	public void upTwo() {
+	public String upTwo() {
 		up();
 		up();
+		return "U2 ";
 	}
-	public void downTwo() {
+	public String downTwo() {
 		down();
 		down();
+		return "D2 ";
 	}
-	public void leftTwo() {
+	public String leftTwo() {
 		left();
 		left();
+		return "L2 ";
 	}
-	public void rightTwo() {
+	public String rightTwo() {
 		right();
 		right();
+		return "R2 ";
 	}
-	public void backTwo() {
+	public String backTwo() {
 		back();
 		back();
+		return "B2 ";
 	}
-	public void frontTwo() {
+	public String frontTwo() {
 		front();
 		front();
+		return "F2 ";
 	}
+	public String turnAroundOrientation(Orientation o) {
+		switch(o) {
+		case PositiveX:
+			return right();
+		case NegativeX:
+			return left();
+		case PositiveY:
+			return back();
+		case NegativeY:
+			return front();
+		case PositiveZ:
+			return up();
+		case NegativeZ:
+			return down();
+		}
+		return null;
+	}
+	public boolean crossSolved() {
+		for(int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if(cube[i][j][0].isEdge()) {
+					if(!cube[i][j][0].isSolved()) {
+						return false;
+					}
+				} 
+			}
+		}
+		return true;
+	}
+	public Edge getCrossPiece() {
+		for(int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				for(int k = 0; k < 3; k++) {
+					if(cube[i][j][k] != null) {
+						if(cube[i][j][k].isEdge() && cube[i][j][k].hasFace(Color.YELLOW) && !(cube[i][j][k].isSolved())) {
+							return (Edge) cube[i][j][k];
+						} 
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+
 }
