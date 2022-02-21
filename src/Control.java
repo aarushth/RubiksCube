@@ -1,6 +1,7 @@
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import RubiksCube.Move;
 
 public class Control implements Frame.EventListener{
 	private MoveParser parser = new MoveParser();
@@ -8,25 +9,29 @@ public class Control implements Frame.EventListener{
 	private Frame frame = new Frame(this);
 	private Solver solver = new Solver();
 	private Cube cube;
+	
+	public Control(Cube c, String s) {
+		cube = c;
+		parser.parse(parser.stringToMove(s), cube, frame);
+	}
 	@Override
 	public void onPaintEvent(Graphics g) {
 		buffer.printStateFrame(cube.getCube(), g);
 	}
-	public Control(Cube c) {
-		cube = c;
-		frame.updateFrame();
-	}
 	@Override
 	public void onKeyEvent(String move) {
-		parser.parse(move, cube);
-		frame.updateFrame();
+		parser.parse(parser.stringToMove(move), cube, frame);
 	}
 	@Override
 	public void onEnterEvent() {
-		String solution = solver.solveCube(cube);
-		parser.parse(solution, cube);
-		frame.updateFrame();
-		System.out.println(solution);
+		Thread thread = new Thread(){
+			public void run(){
+				ArrayList<Move> solution = solver.solveCube(cube, frame);
+				solution = parser.compress(solution);
+				System.out.println(parser.moveToString(solution));
+			}
+		};
+		thread.start();
 	}
 
 }

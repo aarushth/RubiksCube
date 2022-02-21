@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Polygon;
 import java.io.FileWriter;
 import java.io.IOException;
 import RubiksCube.*;

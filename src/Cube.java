@@ -1,11 +1,12 @@
 import RubiksCube.*;
-public class Cube {
+public class Cube implements Cloneable{
+
+	public Object clone()throws CloneNotSupportedException{  
+		return super.clone();  
+	}  
 	private Piece[][][] cube = new Piece[3][3][3];
 	public Piece[][][] getCube(){
 		return cube;
-	}
-	public void setCube(Piece[][][] c) {
-		cube = c;
 	}
 	private Piece[][][] getCubeCopy(){
 		Piece[][][] cubeCopy = new Piece[3][3][3];
@@ -51,13 +52,13 @@ public class Cube {
 				for(int k = -1; k < 2; k++) {
 					switch(Math.abs(i) + Math.abs(j) + Math.abs(k)) {
 					case 3:
-						cube[i+1][j+1][k+1] = new Corner(whichXFace(i), whichYFace(j), whichZFace(k));
+						cube[i+1][j+1][k+1] = new Corner(whichXFace(i), whichYFace(j), whichZFace(k), new Point(i+1, j+1, k+1));
 						break;
 					case 2:
-						cube[i+1][j+1][k+1] = new Edge(whichXFace(i), whichYFace(j), whichZFace(k));
+						cube[i+1][j+1][k+1] = new Edge(whichXFace(i), whichYFace(j), whichZFace(k), new Point(i+1, j+1, k+1));
 						break;
 					case 1:
-						cube[i+1][j+1][k+1] = new Center(whichXFace(i), whichYFace(j), whichZFace(k));
+						cube[i+1][j+1][k+1] = new Center(whichXFace(i), whichYFace(j), whichZFace(k), new Point(i+1, j+1, k+1));
 						break;
 					case 0:
 						cube[i+1][j+1][k+1] = null;
@@ -66,7 +67,12 @@ public class Cube {
 			}
 		}
 	}
-	public String up() {
+	private void pause(Frame f){
+		long start = System.currentTimeMillis();
+		while(start >= System.currentTimeMillis() - 100);
+		f.updateFrame();
+	}
+	private void upPriv() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -76,11 +82,30 @@ public class Cube {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				cube[i][j][2] = temp[2-j][i][2];
+				cube[i][j][2].setPos(new Point(i, j, 2));
 			}
 		}
-		return "U ";
 	}
-	public String down() {
+	public Move up(Frame f){
+		upPriv();
+		pause(f);
+		return Move.UP;
+	}
+	public Move upPrime(Frame f) {
+		upPriv();
+		upPriv();
+		upPriv();
+		pause(f);
+		return Move.UPPRIME;
+	}
+	public Move upTwo(Frame f) {
+		upPriv();
+		upPriv();
+		pause(f);
+		return Move.UPTWO;
+	}
+	
+	private void downPriv() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -90,11 +115,30 @@ public class Cube {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				cube[i][j][0] = temp[j][2-i][0];
+				cube[i][j][2].setPos(new Point(i, j, 0));
 			}
 		}
-		return "D ";
 	}
-	public String right() {
+	public Move down(Frame f){
+		downPriv();
+		pause(f);
+		return Move.DOWN;
+	}
+	public Move downPrime(Frame f) {
+		downPriv();
+		downPriv();
+		downPriv();
+		pause(f);
+		return Move.DOWNPRIME;
+	}
+	public Move downTwo(Frame f) {
+		downPriv();
+		downPriv();
+		pause(f);
+		return Move.DOWNTWO;
+	}
+	
+	private void rightPriv() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -104,11 +148,31 @@ public class Cube {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				cube[2][i][j] = temp[2][2-j][i];
+				cube[2][i][j].setPos(new Point(2, i, j));
 			}
 		}
-		return "R ";
 	}
-	public String left() {
+	public Move right(Frame f){
+		rightPriv();
+		pause(f);
+		return Move.RIGHT;
+	}
+	public Move rightPrime(Frame f) {
+		rightPriv();
+		rightPriv();
+		rightPriv();
+		pause(f);
+		return Move.RIGHTPRIME;
+	}
+	public Move rightTwo(Frame f) {
+		rightPriv();
+		rightPriv();
+		pause(f);
+		return Move.RIGHTTWO;
+	}
+	
+	private void leftPriv() {
+
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -118,12 +182,30 @@ public class Cube {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				cube[0][i][j] = temp[0][j][2-i];
+				cube[0][i][j].setPos(new Point(0, i, j));
 			}
 		}
-		return "L ";
 	}
-	
-	public String back() {
+	public Move left(Frame f){
+		leftPriv();
+		pause(f);
+		return Move.LEFT;
+	}
+	public Move leftPrime(Frame f) {
+		leftPriv();
+		leftPriv();
+		leftPriv();
+		pause(f);
+		return Move.LEFTPRIME;
+	}
+	public Move leftTwo(Frame f) {
+		leftPriv();
+		leftPriv();
+		pause(f);
+		return Move.LEFTTWO;
+	}
+
+	private void backPriv() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -133,11 +215,30 @@ public class Cube {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				cube[i][2][j] = temp[j][2][2-i];
+				cube[i][2][j].setPos(new Point(i, 2, j));
 			}
 		}
-		return "B ";
 	}
-	public String front() {
+	public Move back(Frame f){
+		backPriv();
+		pause(f);
+		return Move.BACK;
+	}
+	public Move backPrime(Frame f) {
+		backPriv();
+		backPriv();
+		backPriv();
+		pause(f);
+		return Move.BACKPRIME;
+	}
+	public Move backTwo(Frame f) {
+		backPriv();
+		backPriv();
+		pause(f);
+		return Move.BACKTWO;
+	}
+	
+	private void frontPriv() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -147,90 +248,44 @@ public class Cube {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				cube[i][0][j] = temp[2-j][0][i];
+				cube[i][0][j].setPos(new Point(i, 0, j));
 			}
 		}
-		return "F ";
 	}
-	public String upPrime() {
-		up();
-		up();
-		up();
-		return "U' ";
+	public Move front(Frame f){
+		frontPriv();
+		pause(f);
+		return Move.FRONT;
 	}
-	public String downPrime() {
-		down();
-		down();
-		down();
-		return "D' ";
+	public Move frontPrime(Frame f) {
+		frontPriv();
+		frontPriv();
+		frontPriv();
+		pause(f);
+		return Move.FRONTPRIME;
 	}
-	public String leftPrime() {
-		left();
-		left();
-		left();
-		return "L' ";
+	public Move frontTwo(Frame f) {
+		frontPriv();
+		frontPriv();
+		pause(f);
+		return Move.FRONTTWO;
 	}
-	public String rightPrime() {
-		right();
-		right();
-		right();
-		return "R' ";
-	}
-	public String backPrime() {
-		back();
-		back();
-		back();
-		return "B' ";
-	}
-	public String frontPrime() {
-		front();
-		front();
-		front();
-		return "F' ";
-	}
-	public String upTwo() {
-		up();
-		up();
-		return "U2 ";
-	}
-	public String downTwo() {
-		down();
-		down();
-		return "D2 ";
-	}
-	public String leftTwo() {
-		left();
-		left();
-		return "L2 ";
-	}
-	public String rightTwo() {
-		right();
-		right();
-		return "R2 ";
-	}
-	public String backTwo() {
-		back();
-		back();
-		return "B2 ";
-	}
-	public String frontTwo() {
-		front();
-		front();
-		return "F2 ";
-	}
-	public String turnAroundOrientation(Orientation o) {
+	
+	
+	public Move turnAroundOrientation(Orientation o, Frame f) {
 		switch(o) {
 		case PositiveX:
-			return right();
+			return right(f);
 		case NegativeX:
-			return left();
+			return left(f);
 		case PositiveY:
-			return back();
+			return back(f);
 		case NegativeY:
-			return front();
+			return front(f);
 		case PositiveZ:
-			return up();
+			return up(f);
 		case NegativeZ:
-			return down();
+			return down(f);
 		}
 		return null;
 	}
@@ -260,6 +315,31 @@ public class Cube {
 		}
 		return null;
 	}
-
+	public boolean bottomCornersSolved(){
+		for(int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if(cube[i][j][0].isCorner()) {
+					if(!cube[i][j][0].isSolved()) {
+						return false;
+					}
+				} 
+			}
+		}
+		return true;
+	}
+	public Corner getBottomCornerPiece(){
+		for(int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				for(int k = 0; k < 3; k++) {
+					if(cube[i][j][k] != null) {
+						if(cube[i][j][k].isCorner() && cube[i][j][k].hasFace(Color.YELLOW) && !(cube[i][j][k].isSolved())) {
+							return (Corner) cube[i][j][k];
+						} 
+					}
+				}
+			}
+		}
+		return null;
+	}
 
 }

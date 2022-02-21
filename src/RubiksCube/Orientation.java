@@ -8,7 +8,7 @@ public enum Orientation {
 	PositiveZ(2, new Vector(0, 0, 1), Color.WHITE),
 	NegativeX(0, new Vector(-1, 0, 0), Color.ORANGE),
 	NegativeY(1, new Vector(0, -1, 0), Color.GREEN),
-	NegativeZ(2, new Vector(0, 0, -1), Color.YELLOW),;
+	NegativeZ(2, new Vector(0, 0, -1), Color.YELLOW);
 	private int value;
 	private Vector vector;
 	private Color color;
