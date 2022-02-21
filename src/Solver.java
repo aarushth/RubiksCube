@@ -112,9 +112,6 @@ public class Solver {
 		ArrayList<Move> solution = new ArrayList<Move>();
 		while(!c.bottomCornersSolved()){
 			Corner corner = c.getBottomCornerPiece();
-			Color crossColor = Color.YELLOW;
-			Color col1 = corner.getNotThisColor(crossColor);
-			Color col2 = corner.getNotThisColor(crossColor, col1);
 			if(corner.getPos().getZ() == 2){
 				while(!(corner.getPos().getX() == corner.getSolvedPos().getX() && corner.getPos().getY() == corner.getSolvedPos().getY())){
 					solution.add(c.up(f));

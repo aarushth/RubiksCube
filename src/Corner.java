@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 import RubiksCube.Point;
 public class Corner extends Piece{
 
