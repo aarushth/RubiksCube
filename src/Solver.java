@@ -21,7 +21,8 @@ public class Solver {
 		solution.addAll(solveCross(c, f));
 		solution.addAll(solveBottomCorners(c, f));
 		solution.addAll(solveSecondLayer(c, f));
-		//solution.addAll(solveTopCross(c, f));
+		solution.addAll(solveTopCross(c, f));
+		solution.addAll(completeOLL(c, f));
 		return solution;
 	}
 	
@@ -252,6 +253,54 @@ public class Solver {
 					solution.addAll(crossAlg(c, f));
 					solution.add(c.up(f));
 				}
+			}
+		}
+		return solution;
+	}
+
+	private ArrayList<Move> completeOLL(Cube c, Frame f){
+		ArrayList<Move> solution = new ArrayList<Move>();
+		while(!c.OLLcomplete()){
+			switch(c.OLLCorners()){
+				case 0:
+					solution.add(c.right(f));
+					solution.add(c.upTwo(f));
+					solution.add(c.rightPrime(f));
+					solution.add(c.upPrime(f));
+					solution.add(c.right(f));
+					solution.add(c.up(f));
+					solution.add(c.rightPrime(f));
+					solution.add(c.upPrime(f));
+					solution.add(c.right(f));
+					solution.add(c.upPrime(f));
+					solution.add(c.rightPrime(f));
+					break;
+				case 1:
+					while(!c.getPiece(0, 0, 2).isColorFacingDirection(Color.WHITE, Orientation.PositiveZ)){
+						c.up(f);
+					}
+					solution.add(c.right(f));
+					solution.add(c.up(f));
+					solution.add(c.rightPrime(f));
+					solution.add(c.up(f));
+					solution.add(c.right(f));
+					solution.add(c.upTwo(f));
+					solution.add(c.rightPrime(f));
+					break;
+				case 2:
+					while(!((c.getPiece(0, 2, 2).isColorFacingDirection(Color.WHITE, Orientation.PositiveZ) && c.getPiece(2, 2, 2).isColorFacingDirection(Color.WHITE, Orientation.PositiveZ)) 
+					|| (c.getPiece(0, 2, 2).isColorFacingDirection(Color.WHITE, Orientation.PositiveZ) && c.getPiece(2, 0, 2).isColorFacingDirection(Color.WHITE, Orientation.PositiveZ)))){
+						solution.add(c.up(f));
+					}
+					solution.add(c.right(f));
+					solution.add(c.back(f));
+					solution.add(c.rightPrime(f));
+					solution.add(c.front(f));
+					solution.add(c.right(f));
+					solution.add(c.backPrime(f));
+					solution.add(c.rightPrime(f));
+					solution.add(c.frontPrime(f));
+					break;
 			}
 		}
 		return solution;

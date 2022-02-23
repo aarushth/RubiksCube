@@ -69,7 +69,7 @@ public class Cube implements Cloneable{
 	}
 	private void pause(Frame f){
 		long start = System.currentTimeMillis();
-		while(start >= System.currentTimeMillis() - 50);
+		while(start >= System.currentTimeMillis() - 10);
 		f.updateFrame();
 	}
 	private void upPriv() {
@@ -384,15 +384,39 @@ public class Cube implements Cloneable{
 		return true;
 	}
 	public boolean barTopCross(){
-		if((cube[1][0][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ) && cube[1][2][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ))||(cube[0][1][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ) && cube[2][1][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ))){
+		if((cube[1][0][2].isColorFacingDirection(Color.WHITE, Orientation.PositiveZ) && cube[1][2][2].isColorFacingDirection(Color.WHITE, Orientation.PositiveZ))||(cube[0][1][2].isColorFacingDirection(Color.WHITE, Orientation.PositiveZ) && cube[2][1][2].isColorFacingDirection(Color.WHITE, Orientation.PositiveZ))){
 			return true;
 		}
 		return false;
 	}
 	public boolean barTopCrossAligned(){
-		if(cube[0][1][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ) && cube[2][1][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ)){
+		if(cube[0][1][2].isColorFacingDirection(Color.WHITE, Orientation.PositiveZ) && cube[2][1][2].isColorFacingDirection(Color.WHITE, Orientation.PositiveZ)){
 			return true;
 		}
 		return false;
+	}
+	public boolean OLLcomplete(){
+		for(int i = 0; i < 3; i+=2){
+			for(int j = 0; j < 3; j+=2){
+				if(!cube[i][j][2].isColorFacingDirection(Color.WHITE, Orientation.PositiveZ)){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public int OLLCorners(){
+		int ans = 0;
+		for(int i = 0; i < 3; i+=2){
+			for(int j = 0; j < 3; j+=2){
+				if(cube[i][j][2].isColorFacingDirection(Color.WHITE, Orientation.PositiveZ)){
+					ans++;
+				}
+			}
+		}
+		return ans;
+	}
+	public Piece getPiece(int x, int y, int z){
+		return cube[x][y][z];
 	}
 }
