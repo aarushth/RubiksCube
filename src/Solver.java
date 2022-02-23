@@ -20,6 +20,8 @@ public class Solver {
 		ArrayList<Move> solution = new ArrayList<Move>();
 		solution.addAll(solveCross(c, f));
 		solution.addAll(solveBottomCorners(c, f));
+		solution.addAll(solveSecondLayer(c, f));
+		//solution.addAll(solveTopCross(c, f));
 		return solution;
 	}
 	
@@ -58,6 +60,49 @@ public class Solver {
 		return solution;
 	}
 	
+	private ArrayList<Move> removePiece(Cube c, Edge e, Frame f){
+		ArrayList<Move> solution = new ArrayList<Move>();
+		ArrayList<Face> faces = e.getFaces();
+		Orientation o1 = faces.get(0).getOrientation();
+		Orientation o2 = faces.get(1).getOrientation();
+		if((o1 == Orientation.PositiveX && o2 == Orientation.NegativeY) || (o1 == Orientation.NegativeY && o2 == Orientation.PositiveX)){
+			solution.add(c.rightPrime(f)); 
+			solution.add(c.front(f));
+			solution.add(c.right(f));
+			solution.add(c.frontPrime(f));
+			solution.addAll(solveBottomCorners(c, f));
+		}else if((o1 == Orientation.PositiveX && o2 == Orientation.PositiveY) || (o1 == Orientation.PositiveY && o2 == Orientation.PositiveX)){
+			solution.add(c.backPrime(f)); 
+			solution.add(c.right(f));
+			solution.add(c.back(f));
+			solution.add(c.rightPrime(f));
+			solution.addAll(solveBottomCorners(c, f));
+		}else if((o1 == Orientation.NegativeX && o2 == Orientation.PositiveY) || (o1 == Orientation.PositiveY && o2 == Orientation.NegativeX)){
+			solution.add(c.leftPrime(f)); 
+			solution.add(c.back(f));
+			solution.add(c.left(f));
+			solution.add(c.backPrime(f));
+			solution.addAll(solveBottomCorners(c, f));
+		}else if((o1 == Orientation.NegativeX && o2 == Orientation.NegativeY) || (o1 == Orientation.NegativeY && o2 == Orientation.NegativeX)){
+			solution.add(c.frontPrime(f)); 
+			solution.add(c.left(f));
+			solution.add(c.front(f));
+			solution.add(c.leftPrime(f));
+			solution.addAll(solveBottomCorners(c, f));
+		}
+		return solution;
+	}
+	
+	private ArrayList<Move> crossAlg(Cube c, Frame f){
+		ArrayList<Move> solution = new ArrayList<Move>();
+		solution.add(c.front(f));
+		solution.add(c.right(f));
+		solution.add(c.up(f));
+		solution.add(c.rightPrime(f));
+		solution.add(c.upPrime(f));
+		solution.add(c.frontPrime(f));
+		return solution;
+	}
 	private ArrayList<Move> solveCross(Cube c, Frame f) {
 		ArrayList<Move> solution = new ArrayList<Move>();
 		while(!c.crossSolved()) {
@@ -112,18 +157,103 @@ public class Solver {
 		ArrayList<Move> solution = new ArrayList<Move>();
 		while(!c.bottomCornersSolved()){
 			Corner corner = c.getBottomCornerPiece();
-			if(corner.getPos().getZ() == 2){
-				while(!(corner.getPos().getX() == corner.getSolvedPos().getX() && corner.getPos().getY() == corner.getSolvedPos().getY())){
+			while(!corner.isSolved()){
+				if(corner.getPos().getZ() == 2){
+					while(!(corner.getPos().getX() == corner.getSolvedPos().getX() && corner.getPos().getY() == corner.getSolvedPos().getY())){
+						solution.add(c.up(f));
+					}
+					while(!corner.isSolved()){
+						solution.addAll(specialMove(c, corner, f));
+					}
+				}else if(corner.getPos().getZ() == 0){
 					solution.add(c.up(f));
-				}
-				while(!corner.isSolved()){
 					solution.addAll(specialMove(c, corner, f));
 				}
-			}else if(corner.getPos().getZ() == 0){
-				solution.add(c.up(f));
-				solution.addAll(specialMove(c, corner, f));
 			}
 		}
 		return solution;
 	}	
+
+	private ArrayList<Move> solveSecondLayer(Cube c, Frame f){
+		ArrayList<Move> solution = new ArrayList<Move>();
+		while(!c.secondLayerSolved()){
+			Edge e = c.getSecondLayerPiece();
+			Color c1 = e.getNotThisColor(Color.YELLOW);
+			Color c2 = e.getNotThisColor(c1);
+			while(!e.isSolved()){
+				if(e.getPos().getZ() == 2){
+					if(e.getOrientationOfColor(c1) != Orientation.PositiveZ){
+						c1 = c2;
+						c2 = e.getNotThisColor(c1);
+					}
+					while(!e.isColorFacingDirection(c2, orientationOfColor.get(c2))){
+						solution.add(c.up(f));
+					}
+					int temp = 0;
+					int temp2 = 0;
+					while(e.isColorFacingDirection(c1, Orientation.PositiveZ) || e.isColorFacingDirection(c1, orientationOfColor.get(c1)) || e.isColorFacingDirection(c1, Orientation.NegativeZ)){
+						solution.add(c.turnAroundOrientation(e.getOrientationOfColor(c2), f));
+						temp++;
+						temp2++;
+					}
+					solution.add(c.upTwo(f));
+					while(temp < 4){
+						solution.add(c.turnAroundOrientation(e.getOrientationOfColor(c2), f));
+						temp++;
+					}
+					while(!e.isColorFacingDirection(c2, orientationOfColor.get(c1))){
+						solution.add(c.up(f));
+					}
+					temp = 0;
+					while(temp < temp2){
+						solution.add(c.turnAroundOrientation(orientationOfColor.get(c2), f));
+						temp++;
+					}
+					solution.add(c.upTwo(f));
+					while(temp < 4){
+						solution.add(c.turnAroundOrientation(orientationOfColor.get(c2), f));
+						temp++;
+					}
+					while(!e.isColorFacingDirection(c2, orientationOfColor.get(c1))){
+						solution.add(c.up(f));
+					}
+					temp = 0;
+					while(temp < temp2){
+						solution.add(c.turnAroundOrientation(orientationOfColor.get(c2), f));
+						temp++;
+					}
+					while(!e.isColorFacingDirection(c2, orientationOfColor.get(c2))){
+						solution.add(c.up(f));
+					}
+					while(temp < 4){
+						solution.add(c.turnAroundOrientation(orientationOfColor.get(c2), f));
+						temp++;
+					}
+				}else{
+					solution.addAll(removePiece(c, e, f));
+				}
+			}
+		}
+		return solution;
+	}
+
+	private ArrayList<Move> solveTopCross(Cube c, Frame f){
+		ArrayList<Move> solution = new ArrayList<Move>();
+		while(!c.topCrossSolved()){
+			if(c.noTopCross()){
+				solution.addAll(crossAlg(c, f));
+			}else if(c.barTopCross()){
+				while(!c.barTopCrossAligned()){
+					solution.add(c.up(f));
+				}
+				solution.addAll(crossAlg(c, f));
+			}else if(!c.noTopCross() || !c.barTopCross()){
+				while(!(c.noTopCross() || c.barTopCross())){
+					solution.addAll(crossAlg(c, f));
+					solution.add(c.up(f));
+				}
+			}
+		}
+		return solution;
+	}
 }

@@ -69,7 +69,7 @@ public class Cube implements Cloneable{
 	}
 	private void pause(Frame f){
 		long start = System.currentTimeMillis();
-		while(start >= System.currentTimeMillis() - 100);
+		while(start >= System.currentTimeMillis() - 50);
 		f.updateFrame();
 	}
 	private void upPriv() {
@@ -341,5 +341,58 @@ public class Cube implements Cloneable{
 		}
 		return null;
 	}
-
+	public boolean secondLayerSolved(){
+		for(int i = 0; i < 3; i++ ){
+			for(int j = 0; j < 3; j++){
+				if(cube[i][j][1] != null && !cube[i][j][1].isSolved()){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public Edge getSecondLayerPiece(){
+		for(int i = 0; i < 3; i++ ){
+			for(int j = 0; j < 3; j++){
+				for(int k = 1; k < 3; k++){
+					if(cube[i][j][k] != null && cube[i][j][k].isEdge() && !cube[i][j][k].isSolved() && !cube[i][j][k].hasFace(Color.WHITE)){
+						return (Edge) cube[i][j][k];
+					}
+				}
+			}
+		}
+		return null;
+	}
+	public boolean topCrossSolved(){
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				if(cube[i][j][2].isEdge() && !cube[i][j][2].isColorFacingDirection(Color.WHITE, Orientation.PositiveZ)){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public boolean noTopCross(){
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				if(cube[i][j][2].isEdge() && cube[i][j][2].isColorFacingDirection(Color.WHITE, Orientation.PositiveZ)){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public boolean barTopCross(){
+		if((cube[1][0][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ) && cube[1][2][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ))||(cube[0][1][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ) && cube[2][1][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ))){
+			return true;
+		}
+		return false;
+	}
+	public boolean barTopCrossAligned(){
+		if(cube[0][1][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ) && cube[2][1][2].isColorFacingDirection(Color.YELLOW, Orientation.PositiveZ)){
+			return true;
+		}
+		return false;
+	}
 }
