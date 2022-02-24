@@ -9,6 +9,7 @@ public class Control implements Frame.EventListener{
 	private Frame frame = new Frame(this);
 	private Solver solver = new Solver();
 	private Cube cube;
+	private boolean isSolving = false;
 	
 	public Control(Cube c, String s) {
 		cube = c;
@@ -24,14 +25,18 @@ public class Control implements Frame.EventListener{
 	}
 	@Override
 	public void onEnterEvent() {
-		Thread thread = new Thread(){
-			public void run(){
-				ArrayList<Move> solution = solver.solveCube(cube, frame);
-				solution = parser.compress(solution);
-				System.out.println(parser.moveToString(solution));
-			}
-		};
-		thread.start();
+		if(!isSolving) {
+			isSolving = true;
+			Thread thread = new Thread(){
+				public void run(){
+					ArrayList<Move> solution = solver.solveCube(cube, frame);
+					solution = parser.compress(solution);
+					System.out.println(parser.moveToString(solution));
+					isSolving = false;
+				}
+			};
+			thread.start();
+		}
 	}
 
 }
