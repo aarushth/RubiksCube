@@ -24,6 +24,7 @@ public class Solver {
 		solution.addAll(solveTopCross(c, f));
 		solution.addAll(completeOLL(c, f));
 		solution.addAll(solveTopCorners(c, f));
+		solution.addAll(solveTopEdges(c, f));
 		return solution;
 	}
 	
@@ -306,7 +307,7 @@ public class Solver {
 		}
 		return solution;
 	}
-		private ArrayList<Move> solveTopCorners(Cube c, Frame f){
+	private ArrayList<Move> solveTopCorners(Cube c, Frame f){
 		ArrayList<Move> solution = new ArrayList<Move>();
 		while(!c.getPiece(0, 0, 2).isSolved()) {
 			solution.add(c.up(f));
@@ -374,5 +375,54 @@ public class Solver {
 			}
 		}
 		return solution;	
+	}
+
+	private ArrayList<Move> solveTopEdges(Cube c, Frame f){
+		ArrayList<Move> solution = new ArrayList<Move>();
+		while(!c.topEdgesSolved()){
+			Edge e = c.getTopSolvedEdge();
+			if(e == null || orientationOfColor.get(e.getNotThisColor(Color.WHITE)) == Orientation.NegativeX){
+				solution.add(c.rightTwo(f));
+				solution.add(c.up(f));
+				solution.add(c.backPrime(f));
+				solution.add(c.front(f));
+				solution.add(c.rightTwo(f));
+				solution.add(c.back(f));
+				solution.add(c.frontPrime(f));
+				solution.add(c.up(f));
+				solution.add(c.rightTwo(f)); 
+			}else if(orientationOfColor.get(e.getNotThisColor(Color.WHITE)) == Orientation.PositiveY){
+				solution.add(c.frontTwo(f));
+				solution.add(c.up(f));
+				solution.add(c.rightPrime(f));
+				solution.add(c.left(f));
+				solution.add(c.frontTwo(f));
+				solution.add(c.right(f));
+				solution.add(c.leftPrime(f));
+				solution.add(c.up(f));
+				solution.add(c.frontTwo(f));
+			}else if(orientationOfColor.get(e.getNotThisColor(Color.WHITE)) == Orientation.PositiveX){
+				solution.add(c.leftTwo(f));
+				solution.add(c.up(f));
+				solution.add(c.frontPrime(f));
+				solution.add(c.back(f));
+				solution.add(c.leftTwo(f));
+				solution.add(c.front(f));
+				solution.add(c.backPrime(f));
+				solution.add(c.up(f));
+				solution.add(c.leftTwo(f));
+			}else {
+				solution.add(c.backTwo(f));
+				solution.add(c.up(f));
+				solution.add(c.leftPrime(f));
+				solution.add(c.right(f));
+				solution.add(c.backTwo(f));
+				solution.add(c.left(f));
+				solution.add(c.rightPrime(f));
+				solution.add(c.up(f));
+				solution.add(c.backTwo(f));
+			}
+		}
+		return solution;
 	}
 }

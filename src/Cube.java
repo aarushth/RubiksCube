@@ -69,7 +69,7 @@ public class Cube implements Cloneable{
 	}
 	private void pause(Frame f){
 		long start = System.currentTimeMillis();
-		while(start >= System.currentTimeMillis() - 10);
+		while(start >= System.currentTimeMillis() - 50);
 		f.updateFrame();
 	}
 	private void upPriv() {
@@ -420,13 +420,33 @@ public class Cube implements Cloneable{
 		return cube[x][y][z];
 	}
 	public boolean topCornersSolved(){
-		for(int i = 0; i < 3; i+=2) {
-			for(int j = 0; j < 3; j+=2) {
-				if(!cube[i][j][2].isSolved()) {
+		for(int i = 0; i < 3; i+=2){
+			for(int j = 0; j < 3; j+=2){
+				if(!cube[i][j][2].isSolved()){
 					return false;
 				}
 			}
 		}
 		return true;
+	}
+	public boolean topEdgesSolved(){
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				if(cube[i][j][2].isEdge() && !cube[i][j][2].isSolved()){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public Edge getTopSolvedEdge(){
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				if(cube[i][j][2].isEdge() && cube[i][j][2].isSolved()){
+					return (Edge) cube[i][j][2];
+				}
+			}
+		}
+		return null;
 	}
 }

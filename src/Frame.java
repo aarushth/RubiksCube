@@ -68,7 +68,6 @@ public class Frame extends JFrame{
 		}
 		
 	}
-
 	public void updateFrame() {
 		c.repaint();
 	}

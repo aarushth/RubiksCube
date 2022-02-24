@@ -33,5 +33,4 @@ public enum Move{
     public int getValue(){
         return value;
     }
-
 }
