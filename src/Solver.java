@@ -114,25 +114,31 @@ public class Solver {
 			Color notCrossColor = e.getNotThisColor(crossColor);
 			while(!e.isSolved()){
 				if(!(e.isColorFacingDirection(crossColor, Orientation.PositiveZ) || e.isColorFacingDirection(notCrossColor, Orientation.PositiveZ))) {
-					int i = 0;
-					Orientation o1 = e.getOrientationOfColor(crossColor);
-					Orientation o2 = e.getOrientationOfColor(notCrossColor);
-					while(!(e.isColorFacingDirection(crossColor, Orientation.PositiveZ) || e.isColorFacingDirection(notCrossColor, Orientation.PositiveZ))) {
-						if(i < 4){
-							solution.add(c.turnAroundOrientation(o1, f));
-						}else{
-							solution.add(c.turnAroundOrientation(o2, f));
+					if(e.isColorFacingDirection(notCrossColor, orientationOfColor.get(notCrossColor))) {
+						while(!e.isSolved()) {
+							c.turnAroundOrientation(orientationOfColor.get(notCrossColor), f);
 						}
-						i++;
-					}
-					solution.add(c.up(f));
-					while(i%4 != 0){
-						if(i < 4){
-							solution.add(c.turnAroundOrientation(o1, f));
-						}else{
-							solution.add(c.turnAroundOrientation(o2, f));
+					}else {
+						int i = 0;
+						Orientation o1 = e.getOrientationOfColor(crossColor);
+						Orientation o2 = e.getOrientationOfColor(notCrossColor);
+						while(!(e.isColorFacingDirection(crossColor, Orientation.PositiveZ) || e.isColorFacingDirection(notCrossColor, Orientation.PositiveZ))) {
+							if(i < 4){
+								solution.add(c.turnAroundOrientation(o1, f));
+							}else{
+								solution.add(c.turnAroundOrientation(o2, f));
+							}
+							i++;
 						}
-						i++;
+						solution.add(c.up(f));
+						while(i%4 != 0){
+							if(i < 4){
+								solution.add(c.turnAroundOrientation(o1, f));
+							}else{
+								solution.add(c.turnAroundOrientation(o2, f));
+							}
+							i++;
+						}
 					}
 				}else if(e.isColorFacingDirection(crossColor, Orientation.PositiveZ)) {
 					while(!e.isColorFacingDirection(notCrossColor, orientationOfColor.get(notCrossColor))) {
