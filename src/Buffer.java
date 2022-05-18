@@ -1,8 +1,12 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+
 import RubiksCube.*;
 
 public class Buffer {
+	private boolean displaySolution = false;
+	private String solution;
 	private RubiksCube.Color[][] net = new RubiksCube.Color[15][11];
 	private Color getColorFrame(RubiksCube.Color c) {
 		if(c == null) {
@@ -24,6 +28,10 @@ public class Buffer {
 		default:
 			return null;
 		}
+	}
+	public void displaySolution(String s){
+		displaySolution = true;
+		solution = s;
 	}
 	public void printStateFrame(Piece[][][] cube, Graphics g) {
 		int i = 0;
@@ -79,5 +87,11 @@ public class Buffer {
 				 g.fillRect(j*65, i*65, 65, 65);
 			 }
 		 }
+		 if(displaySolution){
+			g.setFont(new Font("Areil", Font.PLAIN, 50));
+			g.setColor(Color.CYAN);
+			g.drawString(solution, 400, 400);
+			displaySolution = false;
+		}
 	}
 }

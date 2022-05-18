@@ -5,6 +5,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 public class Frame extends JFrame{
 	public interface EventListener{
@@ -15,6 +17,7 @@ public class Frame extends JFrame{
 	
 	private Canvas c;
 	public EventListener listener;
+	private JLabel solution = new JLabel("solution");
 	
 	
 	public Frame(EventListener e) {
@@ -27,6 +30,8 @@ public class Frame extends JFrame{
 		setFocusable(true);
 		c = new Canvas() {
 			public void paint(Graphics g){
+				solution.setText("blah ");
+
 				listener.onPaintEvent(g);
 			}
 		};
