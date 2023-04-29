@@ -1,9 +1,7 @@
 import RubiksCube.*;
 public class Cube implements Cloneable{
 
-	public Object clone()throws CloneNotSupportedException{  
-		return super.clone();  
-	}  
+	
 	private Piece[][][] cube = new Piece[3][3][3];
 	public Piece[][][] getCube(){
 		return cube;
@@ -13,7 +11,7 @@ public class Cube implements Cloneable{
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				for(int k = 0; k < 3; k++) {
-					cubeCopy[i][j][k] = cube[i][j][k];
+					cubeCopy[i][j][k] =  cube[i][j][k];
 				}
 			}
 		}
@@ -72,6 +70,7 @@ public class Cube implements Cloneable{
 		while(start >= System.currentTimeMillis() - 50);
 		f.updateFrame();
 	}
+	
 	private void upPriv() {
 		Piece[][][] temp = getCubeCopy();
 		for(int i = 0; i < 3; i++) {

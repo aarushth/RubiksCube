@@ -8,16 +8,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class Frame extends JFrame{
+public class Frame extends JFrame implements Panel.EventListener{
 	public interface EventListener{
 		public void onPaintEvent(Graphics g);
 		public void onKeyEvent(String move);
 		public void onEnterEvent();
 	}
 	
-	private Canvas c;
 	public EventListener listener;
-	private JLabel solution = new JLabel("solution");
+	private Panel p;
 	
 	
 	public Frame(EventListener e) {
@@ -28,15 +27,9 @@ public class Frame extends JFrame{
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setFocusable(true);
-		c = new Canvas() {
-			public void paint(Graphics g){
-				solution.setText("blah ");
+		p = new Panel(this);
 
-				listener.onPaintEvent(g);
-			}
-		};
-
-		add(c);
+		add(p);
 
 		
 		addKeyListener(new KeyListener());
@@ -74,7 +67,11 @@ public class Frame extends JFrame{
 		
 	}
 	public void updateFrame() {
-		c.repaint();
+		p.repaint();
+	}
+	@Override
+	public void onPaintEvent(Graphics g) {
+		listener.onPaintEvent(g);
 	}
 
 }

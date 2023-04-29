@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import RubiksCube.*;
-public class Piece {
+public class Piece implements Cloneable{
 	
 	private HashMap<Orientation, Face> faceByOrientation = new HashMap<>();
 	private HashMap<Color, Face> faceByColor = new HashMap<>();
@@ -113,6 +113,7 @@ public class Piece {
 		}
 		return null;
 	}
+	
 	public void rotate(Orientation o) {
 		faceByOrientation.clear();
 		for (int i = 0; i < faces.size(); i++) {
