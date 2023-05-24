@@ -30,8 +30,6 @@ public class Frame extends JFrame{
 		setFocusable(true);
 		c = new Canvas() {
 			public void paint(Graphics g){
-				solution.setText("blah ");
-
 				listener.onPaintEvent(g);
 			}
 		};

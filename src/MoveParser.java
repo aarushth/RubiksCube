@@ -218,18 +218,4 @@ public class MoveParser {
 		return string.toString();
 	}
 
-	public ArrayList<Move> compress(ArrayList<Move> moves){
-		ArrayList<Move> compressedMoves = new ArrayList<Move>();
-		for(int i = 0; i < moves.size(); i++){
-			int temp = 0;
-			int j = 0;
-			for(j = 0; i+j < moves.size() && moves.get(i).getType() == moves.get(i+j).getType();j++){
-				temp +=moves.get(i+j).getValue();
-			}
-			temp = temp % 4;
-			compressedMoves.add(getMove(moves.get(i).getType(), temp));
-			i+=(j-1);
-		}
-		return compressedMoves;
-	}
 }
