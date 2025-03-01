@@ -31,7 +31,7 @@ public class Control implements Frame.EventListener{
 			Thread thread = new Thread(){
 				public void run(){
 					ArrayList<Move> solution = solver.solveCube(cube, frame);
-					solution = parser.compress(solution);
+					// solution = parser.compress(solution);
 					System.out.println(parser.moveToString(solution));
 					isSolving = false;
 				}
